@@ -5,7 +5,7 @@ def check(tab):
     pos = True
     neg = True
     for i in range(len(tab) - 1):
-        difference = tab[i+1] - tab[i]
+        difference = tab[i + 1] - tab[i]
         differences.append(difference)
     for i in differences:
         if i not in positive:
