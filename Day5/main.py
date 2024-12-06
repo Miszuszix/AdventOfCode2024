@@ -1,6 +1,7 @@
 before = []
 after = []
-result = 0
+suma = 0
+canContinue = True
 with open("data") as file:
     for line in file:
         if line == "\n":
@@ -12,17 +13,26 @@ with open("data") as file:
         okay = True
         line = line.strip()
         tab = list(map(int, line.split(",")))
-        for i in range(len(tab) - 1):
-            if not okay:
+        while True:
+            for i in range(len(tab) - 1):
+                current = tab[i]
+                temp = tab[i + 1:]
+                target = []
+                for j in range(len(before)):
+                    if before[j] == current and after[j] in temp:
+                        target.append(after[j])
+                if len(target) == len(temp):
+                    continue
+                for j in temp:
+                    if j not in target:
+                        okay = False
+                        inTab = tab.index(j)
+                        notInTab = tab.index(current)
+                        tab[notInTab], tab[inTab] = j, current
                 break
-            current = tab[i]
-            temp = tab[i + 1:]
-            target = []
-            for j in range(len(before)):
-                if before[j] == current and after[j] in temp:
-                    target.append(after[j])
-            if len(target) != len(temp):
-                okay = False
-        if okay:
-            result += tab[int((len(tab) - 1) / 2)]
-print(f'Result: {result}')
+            else:
+                break
+        if not okay:
+            result = tab[int((len(tab) - 1) / 2)]
+            suma += result
+print(f'Suma: {suma}')
