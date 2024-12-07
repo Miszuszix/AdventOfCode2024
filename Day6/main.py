@@ -44,7 +44,7 @@ def moveRight():
     guard[1] += 1
     previous = "right"
 
-with open("data_example") as file:
+with open("data") as file:
     for line in file:
         line = line.strip()
         room.append(list(line))
@@ -55,31 +55,102 @@ for i, row in enumerate(room):
         break
 
 while True:
+    print(guard)
     try:
+        prediction = 1
         match direction:
             case "up":
-                if [guard[0], guard[1] + 1] in path and previous != "left":
-                    index = path.index([guard[0], guard[1] + 1])
-                    if directions[index] == "right":
-                        counter += 1
+                current = [guard[0], guard[1] + prediction]
+                try:
+                    while current != '#':
+                        try:
+                            index = path.index([guard[0], guard[1] + prediction])
+                        except ValueError:
+                            prediction += 1
+                            current = [guard[0], guard[1] + prediction]
+                            if current[1] == len(room[0]):
+                                break
+                            continue
+                        if [guard[0], guard[1] + prediction] in path and previous != "left":
+                            if directions[index] == "right":
+                                counter += 1
+                                break
+                        prediction += 1
+                        current = [guard[0], guard[1] + prediction]
+                        if current[1] == len(room[0]):
+                            break
+                except IndexError:
+                    pass
                 moveUp()
             case "down":
-                if [guard[0], guard[1] - 1] in path and previous != "right":
-                    index = path.index([guard[0], guard[1] - 1])
-                    if directions[index] == "left":
-                        counter += 1
+                current = [guard[0], guard[1] - prediction]
+                try:
+                    while current != '#':
+                        try:
+                            index = path.index([guard[0], guard[1] - prediction])
+                        except ValueError:
+                            prediction += 1
+                            current = [guard[0], guard[1] - prediction]
+                            if current[1] == 0:
+                                break
+                            continue
+                        if [guard[0], guard[1] - prediction] in path and previous != "right":
+                            if directions[index] == "left":
+                                counter += 1
+                                break
+                        prediction += 1
+                        current = [guard[0], guard[1] - prediction]
+                        if current[1] == 0:
+                            break
+                except IndexError:
+                    pass
                 moveDown()
             case "left":
-                if [guard[0] - 1, guard[1]] in path and previous != "down":
-                    index = path.index([guard[0] - 1, guard[1]])
-                    if directions[index] == "up":
-                        counter += 1
+                current = [guard[0] - prediction, guard[1]]
+                try:
+                    while current != '#':
+                        try:
+                            index = path.index([guard[0] - prediction, guard[1]])
+                        except ValueError:
+                            prediction += 1
+                            current = [guard[0] - prediction, guard[1]]
+                            if current[0] == 0:
+                                break
+                            continue
+                        if [guard[0] - prediction, guard[1]] in path and previous != "down":
+                            if directions[index] == "up":
+                                counter += 1
+                                break
+                        prediction += 1
+                        current = [guard[0] - prediction, guard[1]]
+                        if current[0] == 0:
+                            break
+                except IndexError:
+                    pass
+
                 moveLeft()
             case "right":
-                if [guard[0] + 1, guard[1]] in path and previous != "up":
-                    index = path.index([guard[0] + 1, guard[1]])
-                    if directions[index] == "down":
-                        counter += 1
+                current = [guard[0] + prediction, guard[1]]
+                try:
+                    while current != '#':
+                        try:
+                            index = path.index([guard[0] + prediction, guard[1]])
+                        except ValueError:
+                            prediction += 1
+                            current = [guard[0] + prediction, guard[1]]
+                            if current[0] == len(room):
+                                break
+                            continue
+                        if [guard[0] + prediction, guard[1]] in path and previous != "up":
+                            if directions[index] == "down":
+                                counter += 1
+                                break
+                        prediction += 1
+                        current = [guard[0] + prediction, guard[1]]
+                        if current[0] == len(room):
+                            break
+                except IndexError:
+                    pass
                 moveRight()
         path.append(guard.copy())
         directions.append(direction)
