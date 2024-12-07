@@ -1,6 +1,7 @@
 tab = []
 global xmas
 xmas = 0
+
 def transponate(tab1):
     result = []
     for i in range(len(tab1)):
