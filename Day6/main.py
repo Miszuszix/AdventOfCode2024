@@ -44,7 +44,7 @@ def moveRight():
     guard[1] += 1
     previous = "right"
 
-with open("data") as file:
+with open("data_example") as file:
     for line in file:
         line = line.strip()
         room.append(list(line))
