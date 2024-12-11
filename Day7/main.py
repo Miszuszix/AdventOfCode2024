@@ -1,5 +1,5 @@
 suma = 0
-with open("data") as file:
+with open("data_example") as file:
     for line in file:
         line = line.split()
         result = line[0]
